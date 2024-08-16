@@ -1,0 +1,145 @@
+{
+    "name": "codecopytoolbar",
+    "displayName": "CodeCopyToolbar",
+    "description": "Customizable toolbar with enhanced copy features for VSCode",
+    "version": "1.0.0",
+    "publisher": "Aiomorphic",
+    "icon": "resources/code-file-copy-icon-for-black-theme-for-vs-code.png",
+    "galleryBanner": {
+        "color": "#222222",
+        "theme": "dark"
+    },
+    "engines": {
+        "vscode": "^1.82.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./src/extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "CodeCopyToolbar",
+            "properties": {
+                "CodeCopyToolbar.buttonConfig": {
+                    "type": "array",
+                    "default": [
+                        {
+                            "name": "Copy File Path and Content",
+                            "icon": "copy",
+                            "command_vscode": "extension.copyCurrentFilePathAndContent"
+                        },
+                        {
+                            "name": "Copy Folder Content",
+                            "icon": "file-code",
+                            "command_vscode": "extension.copyCurrentFolderPathAndContent"
+                        },
+                        {
+                            "name": "Copy Project Structure and Docs",
+                            "icon": "code",
+                            "command_vscode": "extension.copyProjectStructureAST"
+                        }
+                    ],
+                    "description": "Configuration for toolbar buttons"
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "extension.copyFilePathAndContent",
+                "title": "Copy File Path and Content",
+                "icon": "$(copy)"
+            },
+            {
+                "command": "extension.copyCurrentFolderPathAndContent",
+                "title": "Copy Folder Content",
+                "icon": "$(file-code)"
+            },
+            {
+                "command": "extension.copyProjectStructureAST",
+                "title": "Copy Project Structure",
+                "icon": "$(code)"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "command": "extension.copyFilePathAndContent",
+                    "group": "navigation"
+                },
+                {
+                    "command": "extension.copyCurrentFolderPathAndContent",
+                    "group": "navigation"
+                },
+                {
+                    "command": "extension.copyProjectStructureAST",
+                    "group": "navigation"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "extension.copyFilePathAndContent",
+                    "when": "resourceLangId",
+                    "group": "copy"
+                }
+            ]
+        }
+    },
+    "keybindings": [
+        {
+            "command": "extension.copyCurrentFilePathAndContent",
+            "key": "ctrl+alt+c",
+            "when": "editorTextFocus"
+        },
+        {
+            "command": "extension.copyOpenTabsPathAndContent",
+            "key": "ctrl+alt+a",
+            "when": "editorTextFocus"
+        },
+        {
+            "command": "extension.copyCurrentFolderPathAndContent",
+            "key": "ctrl+alt+f",
+            "when": "editorTextFocus"
+        },
+        {
+            "command": "extension.copyProjectStructureAST",
+            "key": "ctrl+alt+s",
+            "when": "editorTextFocus"
+        }
+    ],
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "node ./test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^8.2.2",
+        "@types/node": "14.x",
+        "@types/vscode": "^1.82.0",
+        "chai": "^5.1.1",
+        "eslint": "^8.57.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.29.1",
+        "glob": "^7.1.7",
+        "inquirer": "^10.1.8",
+        "mocha": "^8.4.0",
+        "typescript": "^4.3.2",
+        "vsce": "^2.15.0",
+        "vscode": "^1.1.37",
+        "vscode-test": "^1.6.1"
+    },
+    "dependencies": {
+        "ignore": "^5.2.0"
+    },
+    "extensionKind": [
+        "workspace",
+        "ui"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/YourGitHubUsername/codecopytoolbar.git"
+    }
+}
