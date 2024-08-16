@@ -2,6 +2,8 @@ When you use the `Copy Project Structure and Docs` command (`copyProjectStructur
 
 This feature is especially useful when you need to provide a detailed project context to a language model (LLM).
 
+# EXAMPLE
+
 ```
 
 Project structure of directory: vs_code_plugins/vscode-copytoolbar

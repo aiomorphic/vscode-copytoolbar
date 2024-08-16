@@ -14,6 +14,7 @@
 - **Copy File Path and Content:** Quickly copy the file path and content of the current file.
 - **Copy Folder Content:** Copy the content of an entire folder, including nested files, while respecting `.gitignore` rules.
 - **Copy Project Structure and Docs:** Generate and copy a structural overview of your project, including documentation, while filtering out files and folders ignored by `.gitignore`.
+- **Remote Explorer Compatibility:** Works seamlessly with Remote Explorer, allowing you to use all features in SSH-connected remote environments, making it perfect for working on remote servers or virtual machines.
 
 ### Toolbar screenshot
 

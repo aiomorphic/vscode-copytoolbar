@@ -3,7 +3,7 @@ For any active file opened in VS Code, you can use the `Copy File Path and Conte
 This feature is especially useful when you need to provide context about a specific file in your project to a language model (LLM).
 
 
-# EXAMPLE:
+# EXAMPLE
 
 ```
 --------------------------------------------------
