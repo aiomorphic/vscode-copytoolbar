@@ -9,12 +9,40 @@
 - **Copy Folder Content:** Copy the content of an entire folder, including nested files.
 - **Copy Project Structure and Docs:** Generate and copy a structural overview of your project, including documentation.
 
-## Installation
+### Install via the Marketplace
 
 1. Open Visual Studio Code.
 2. Go to the Extensions view (`Ctrl+Shift+X`).
 3. Search for "CodeCopyToolbar".
 4. Click **Install**.
+5. Alternatively, you can install it directly via the following link: [CodeCopyToolbar on VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar).
+
+### Install Manually from Source
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/aiomorphic/vscode-copytoolbar.git
+cd vscode-copytoolbar
+```
+
+2. Install the necessary dependencies:
+
+```bash
+npm install
+```
+
+3. Package the extension:
+
+```bash
+npx vsce package
+```
+
+4. Install the extension in Visual Studio Code:
+
+- Open the Extensions view (Ctrl+Shift+X).
+- Click on the three dots (...) in the top-right corner and select Install from VSIX....
+- Browse to the .vsix file generated in the previous step and install it.
 
 ## Usage
 
