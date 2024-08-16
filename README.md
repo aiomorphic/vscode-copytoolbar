@@ -12,10 +12,45 @@
 
 - **Customizable Toolbar:** Configure buttons on the toolbar to fit your workflow.
 - **Copy File Path and Content:** Quickly copy the file path and content of the current file.
-- **Copy Folder Content:** Copy the content of an entire folder, including nested files.
-- **Copy Project Structure and Docs:** Generate and copy a structural overview of your project, including documentation.
+- **Copy Folder Content:** Copy the content of an entire folder, including nested files, while respecting `.gitignore` rules.
+- **Copy Project Structure and Docs:** Generate and copy a structural overview of your project, including documentation, while filtering out files and folders ignored by `.gitignore`.
 
-### Install via the Marketplace
+### Toolbar screenshot
+
+![Image](resources/copytoolbar-toolbar.png)
+
+### Files explorer context menu
+
+![Image](resources/copytoolbar-context-menu.png)
+
+
+## Use cases
+
+1. **Copy File Path and Content**
+
+For any active file opened in VS Code, you can use the `Copy File Path and Content` command (`copyCurrentFilePathAndContent`) from the toolbar or command palette. This command copies the content of the **selected file**.
+
+This feature is especially useful when you need to provide context about a specific file in your project to a language model (LLM).
+
+[Example of Copy File Path and Content](examples/single_file_copy.md)
+
+2. **Copy Folder Content**
+
+When navigating in the Files Explorer, you can select any file within a folder and use the `Copy Folder Content` command (`copyCurrentFolderPathAndContent`) from the toolbar or command palette. This command copies the content of **all code files in the selected folder and its subfolders**.
+
+This feature is particularly useful when you want to provide context about a specific module of your project to a language model (LLM) without including the entire project codebase.
+
+[Example of Copy Folder Content](examples/folder_copy.md)
+
+3. **Copy Project Structure and Docs**
+
+When you use the `Copy Project Structure and Docs` command (`copyProjectStructureAST`), the extension analyzes the Python project using Abstract Syntax Tree (AST) to generate a concise overview of the project's structure. Additionally, it copies the contents of all `.md` files, such as README and other documentation files.
+
+This feature is especially useful when you need to provide a detailed project context to a language model (LLM).
+
+[Example of Copy Project Structure and Docs](examples/project_structure.md)
+
+## Install via the Marketplace
 
 1. Open Visual Studio Code.
 2. Go to the Extensions view (`Ctrl+Shift+X`).

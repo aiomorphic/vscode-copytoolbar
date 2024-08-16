@@ -2,7 +2,7 @@
     "name": "codecopytoolbar",
     "displayName": "CodeCopyToolbar",
     "description": "Customizable toolbar with enhanced copy features for VSCode",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "Aiomorphic",
     "icon": "resources/code-file-copy-icon-for-black-theme-for-vs-code.png",
     "galleryBanner": {
