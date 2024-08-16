@@ -1,5 +1,11 @@
 # CodeCopyToolbar
 
+[![Version](https://img.shields.io/visual-studio-marketplace/v/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
+
+<img src="resources/vs-code-extension-marketplace-cover-image.png" width="538" height="307" alt="CodeCopyToolbar Cover Image">
+
 **CodeCopyToolbar** is a Visual Studio Code extension designed to enhance your productivity by providing a customizable toolbar with advanced copy features. With this extension, you can easily copy file paths, content, and project structures directly from the editor.
 
 ## Features
