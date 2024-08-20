@@ -94,11 +94,11 @@ def analyze_directory(directory):
     total_lines = 0
     total_files = 0
 
-    # Directories to exclude
+    
     excluded_dirs = {'venv', 'node_modules', '__pycache__', 'dist', 'build'}
 
     for subdir, _, files in os.walk(directory):
-        # Exclude specific directories
+        
         if any(excluded_dir in subdir.split(os.sep) for excluded_dir in excluded_dirs):
             continue
 

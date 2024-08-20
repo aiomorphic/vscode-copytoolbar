@@ -1,86 +1,74 @@
 {
-    "name": "codecopytoolbar",
-    "displayName": "CodeCopyToolbar",
-    "description": "Customizable toolbar with enhanced copy features for VSCode",
-    "version": "1.0.1",
+    "name": "fastpaste",
+    "displayName": "FastPaste",
+    "description": "The Fastest Way to Copy and Paste to ChatGPT or Claude",
+    "version": "1.0.2",
     "publisher": "Aiomorphic",
-    "icon": "resources/code-file-copy-icon-for-black-theme-for-vs-code.png",
-    "galleryBanner": {
-        "color": "#222222",
-        "theme": "dark"
-    },
+    "icon": "resources/fastpaste-icon.png",
     "engines": {
-        "vscode": "^1.82.0"
+      "vscode": "^1.82.0"
     },
     "categories": [
-        "Other"
+      "Other"
     ],
     "activationEvents": [
-        "onStartupFinished"
+      "onStartupFinished"
     ],
     "main": "./src/extension.js",
     "contributes": {
-        "configuration": {
-            "title": "CodeCopyToolbar",
-            "properties": {
-                "CodeCopyToolbar.buttonConfig": {
-                    "type": "array",
-                    "default": [
-                        {
-                            "name": "Copy File Path and Content",
-                            "icon": "copy",
-                            "command_vscode": "extension.copyCurrentFilePathAndContent"
-                        },
-                        {
-                            "name": "Copy Folder Content",
-                            "icon": "file-code",
-                            "command_vscode": "extension.copyCurrentFolderPathAndContent"
-                        },
-                        {
-                            "name": "Copy Project Structure and Docs",
-                            "icon": "code",
-                            "command_vscode": "extension.copyProjectStructureAST"
-                        }
-                    ],
-                    "description": "Configuration for toolbar buttons"
-                }
-            }
-        },
-        "commands": [
+      "configuration": {
+        "title": "FastPaste",
+        "properties": {
+          "FastPaste.buttonConfig": {
+            "type": "array",
+            "description": "Configuration for toolbar buttons"
+          },
+          "FastPaste.showNotifications": {
+            "type": "boolean",
+            "default": true,
+            "description": "Show toast notifications when copying content"
+          }
+        }
+      },
+      "commands": [
             {
-                "command": "extension.copyFilePathAndContent",
+                "command": "fastPaste.copyFilePathAndContent",
                 "title": "Copy File Path and Content",
                 "icon": "$(copy)"
             },
             {
-                "command": "extension.copyCurrentFolderPathAndContent",
+                "command": "fastPaste.copyCurrentFolderPathAndContent",
                 "title": "Copy Folder Content",
-                "icon": "$(file-code)"
+                "icon": "$(file-submodule)"
             },
             {
-                "command": "extension.copyProjectStructureAST",
+                "command": "fastPaste.copyProjectStructureAST",
                 "title": "Copy Project Structure",
-                "icon": "$(code)"
+                "icon": "$(symbol-struct)"
+            },
+            {
+                "command": "fastPaste.refreshToolbar",
+                "title": "Refresh FastPaste Toolbar"
             }
         ],
         "menus": {
             "editor/title": [
                 {
-                    "command": "extension.copyFilePathAndContent",
+                    "command": "fastPaste.copyFilePathAndContent",
                     "group": "navigation"
                 },
                 {
-                    "command": "extension.copyCurrentFolderPathAndContent",
+                    "command": "fastPaste.copyCurrentFolderPathAndContent",
                     "group": "navigation"
                 },
                 {
-                    "command": "extension.copyProjectStructureAST",
+                    "command": "fastPaste.copyProjectStructureAST",
                     "group": "navigation"
                 }
             ],
             "explorer/context": [
                 {
-                    "command": "extension.copyFilePathAndContent",
+                    "command": "fastPaste.copyFilePathAndContent",
                     "when": "resourceLangId",
                     "group": "copy"
                 }
@@ -89,22 +77,22 @@
     },
     "keybindings": [
         {
-            "command": "extension.copyCurrentFilePathAndContent",
+            "command": "fastPaste.copyCurrentFilePathAndContent",
             "key": "ctrl+alt+c",
             "when": "editorTextFocus"
         },
         {
-            "command": "extension.copyOpenTabsPathAndContent",
+            "command": "fastPaste.copyOpenTabsPathAndContent",
             "key": "ctrl+alt+a",
             "when": "editorTextFocus"
         },
         {
-            "command": "extension.copyCurrentFolderPathAndContent",
+            "command": "fastPaste.copyCurrentFolderPathAndContent",
             "key": "ctrl+alt+f",
             "when": "editorTextFocus"
         },
         {
-            "command": "extension.copyProjectStructureAST",
+            "command": "fastPaste.copyProjectStructureAST",
             "key": "ctrl+alt+s",
             "when": "editorTextFocus"
         }
@@ -140,6 +128,6 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/aiomorphic/vscode-copytoolbar.git"
+        "url": "https://github.com/aiomorphic/vscode-fastpaste.git"
     }
 }

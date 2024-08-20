@@ -6,42 +6,39 @@ const {
 } = require('child_process');
 const os = require('os');
 const ignore = require('ignore');
+const ConfigManager = require('./configManager');
 
 class CopyFeatures {
-    static async copyFilePathAndContent(fileList) {
-        const files = fileList ? (Array.isArray(fileList) ? fileList : [fileList]) : [];
-
-        const [workspaceRoot] = vscode.workspace.workspaceFolders?.map((folder) => folder.uri.fsPath) || [];
+    static async copyFilePathAndContent(uri) {
+        const editor = vscode.window.activeTextEditor;
+        const fileUri = uri || (editor ? editor.document.uri : null);
+    
+        if (!fileUri) {
+            vscode.window.showErrorMessage('No file selected or active editor found.');
+            return;
+        }
+    
+        const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+    
         if (!workspaceRoot) {
             vscode.window.showInformationMessage('No workspace is opened.');
             return;
         }
-
-        const copyStrings = await Promise.all(
-            files.map(async (fileUri) => {
-                const normalizedPath = path.relative(workspaceRoot, fileUri.fsPath).split(path.sep).join('/');
-                try {
-                    const fileContent = await fs.readFile(fileUri.fsPath, 'utf-8');
-                    const separator = '-'.repeat(50);
-                    return `${separator}\n\n/${normalizedPath}:\n\n${separator}\n\n${fileContent}`;
-                } catch (error) {
-                    vscode.window.showErrorMessage(`Error reading file: ${fileUri.fsPath}`);
-                    return null;
-                }
-            })
-        );
-
-        const validStrings = copyStrings.filter(Boolean); // Remove nulls
-        if (validStrings.length > 0) {
-            try {
-                await vscode.env.clipboard.writeText(validStrings.join(''));
-                vscode.window.showInformationMessage('File path(s) and content copied to clipboard.');
-            } catch (error) {
-                vscode.window.showErrorMessage('Failed to copy content to clipboard.');
-            }
+    
+        const normalizedPath = path.relative(workspaceRoot, fileUri.fsPath).split(path.sep).join('/');
+    
+        try {
+            const fileContent = await fs.readFile(fileUri.fsPath, 'utf-8');
+            const separator = '-'.repeat(50);
+            const copyString = `${separator}\n\n/${normalizedPath}:\n\n${separator}\n\n${fileContent}`;
+    
+            await vscode.env.clipboard.writeText(copyString);
+            vscode.window.showInformationMessage('File path and content copied to clipboard.');
+        } catch (error) {
+            vscode.window.showErrorMessage(`Error reading file: ${fileUri.fsPath}`);
         }
     }
-
+    
     static async copyProjectStructureAST() {
         const editor = vscode.window.activeTextEditor;
         const targetDirectory = editor ?
@@ -133,6 +130,36 @@ class CopyFeatures {
         }
     }
 
+    static async copyMultipleFilesPathAndContent(uris) {
+        const copyStrings = [];
+        const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+    
+        if (!workspaceRoot) {
+            this.showNotification('No workspace is opened.', true);
+            return;
+        }
+    
+        for (const uri of uris) {
+            const normalizedPath = path.relative(workspaceRoot, uri.fsPath).split(path.sep).join('/');
+            try {
+                const fileContent = await fs.readFile(uri.fsPath, 'utf-8');
+                const separator = '-'.repeat(50);
+                const copyString = `${separator}\n\n/${normalizedPath}:\n\n${separator}\n\n${fileContent}`;
+                copyStrings.push(copyString);
+            } catch (error) {
+                this.showNotification(`Error reading file: ${uri.fsPath}`, true);
+            }
+        }
+    
+        if (copyStrings.length > 0) {
+            const combinedContent = copyStrings.join('\n\n');
+            await vscode.env.clipboard.writeText(combinedContent);
+            this.showNotification(`${copyStrings.length} file(s) copied to clipboard.`);
+        } else {
+            this.showNotification('No files were copied.', true);
+        }
+    }                                                   
+
     static async copyCurrentFolderPathAndContent() {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -164,18 +191,16 @@ class CopyFeatures {
     }
 
     static async traverseFolderAndCopy(folderPath, workspaceRoot, copyStrings, ig) {
-        const entries = await fs.readdir(folderPath, {
-            withFileTypes: true
-        });
-        const fileExtensions = ['.py', '.yaml', '.ini', '.html', '.js', '.css', '.scss', '.md', '.txt'];
-
+        const entries = await fs.readdir(folderPath, { withFileTypes: true });
+        const fileExtensions = ConfigManager.getFileExtensions();
+    
         for (const entry of entries) {
             const fullPath = path.join(folderPath, entry.name);
-
+    
             if (ig.ignores(path.relative(workspaceRoot, fullPath))) {
                 continue;
             }
-
+    
             if (entry.isDirectory()) {
                 await this.traverseFolderAndCopy(fullPath, workspaceRoot, copyStrings, ig);
             } else if (entry.isFile() && fileExtensions.some((ext) => entry.name.endsWith(ext))) {
@@ -186,6 +211,16 @@ class CopyFeatures {
                 const copyString = `${separator}\n\n/${normalizedPath}:\n\n${separator}\n\n${fileContent}`;
                 copyStrings.push(copyString);
                 copyStrings.push('\n\n');
+            }
+        }
+    }
+
+    static showNotification(message, isError = false) {
+        if (ConfigManager.getShowNotifications()) {
+            if (isError) {
+                vscode.window.showErrorMessage(message);
+            } else {
+                vscode.window.showInformationMessage(message);
             }
         }
     }

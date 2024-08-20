@@ -6,54 +6,46 @@ const constants = require('./constants');
 let toolbarManager;
 
 function activate(context) {
-    console.log('CodeCopyToolbar is now active!');
-
+    console.log('FastPaste is now active!');
 
     toolbarManager = new ToolbarManager(context);
-    console.log('ToolbarManager initialized');
 
-
-    let disposable = vscode.commands.registerCommand('extension.copyFilePathAndContent', async (uri, uris) => {
-        console.log('copyFilePathAndContent called with uri:', uri, 'and uris:', uris);
-
-
-        if (uris && (!Array.isArray(uris) || uris.length === 0 || typeof uris[0] !== 'object' || !uris[0]
-                .path)) {
-            uris = [];
+    
+    let disposable = vscode.commands.registerCommand(constants.CMD_COPY_FILE_PATH_CONTENT, async (uri, uris) => {
+        if (uris && uris.length > 0) {
+            
+            await CopyFeatures.copyMultipleFilesPathAndContent(uris);
+        } else if (uri && uri.scheme === 'file') {
+            
+            await CopyFeatures.copyFilePathAndContent(uri);
+        } else {
+            
+            await CopyFeatures.copyFilePathAndContent(undefined);
         }
-
-
-        if (uris.length === 0 && uri && uri.path) {
-            uris = [uri];
-        }
-
-        if (uris.length === 0) {
-            console.error('Error: No valid URIs available to copy.');
-            vscode.window.showErrorMessage('No valid file paths provided.');
-            return;
-        }
-
-        await CopyFeatures.copyFilePathAndContent(uris);
     });
     context.subscriptions.push(disposable);
 
-    disposable = vscode.commands.registerCommand('extension.copyCurrentFolderPathAndContent', async () => {
+    
+    context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_CURRENT_FILE_PATH_CONTENT, async () => {
+        await CopyFeatures.copyFilePathAndContent();
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_FOLDER_CONTENT, async () => {
         await CopyFeatures.copyCurrentFolderPathAndContent();
-    });
-    context.subscriptions.push(disposable);
+    }));
 
-    disposable = vscode.commands.registerCommand('extension.copyProjectStructureAST', async () => {
+    context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_PROJECT_STRUCTURE, async () => {
         await CopyFeatures.copyProjectStructureAST();
-    });
-    context.subscriptions.push(disposable);
+    }));
 
-    console.log('CodeCopyToolbar activation completed');
+    console.log('FastPaste activation completed');
 }
 
 function deactivate() {
     if (toolbarManager) {
         toolbarManager.dispose();
     }
+    console.log('FastPaste deactivated');
 }
 
 module.exports = {

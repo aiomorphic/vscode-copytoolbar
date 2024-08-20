@@ -1,35 +1,20 @@
-const EXTENSION_NAME = 'CodeCopyToolbar';
+const EXTENSION_NAME = 'FastPaste';
 
 module.exports = {
     EXTENSION_NAME,
 
-    CMD_COPY_FILE_PATH_CONTENT: 'extension.copyFilePathAndContent',
-    CMD_COPY_OPEN_TABS_PATH_CONTENT: 'extension.copyOpenTabsPathAndContent',
-    CMD_COPY_SELECTED_TAB_PATH_CONTENT: 'extension.copySelectedTabPathAndContent',
-    CMD_COPY_CURRENT_FILE_PATH_CONTENT: 'extension.copyCurrentFilePathAndContent',
-    CMD_COPY_FOLDER_CONTENT: 'extension.copyCurrentFolderPathAndContent',
-    CMD_COPY_PROJECT_STRUCTURE: 'extension.copyProjectStructureAST',
-    CMD_REFRESH_TOOLBAR: 'codeCopyToolbar.refreshToolbar',
+    CMD_COPY_FILE_PATH_CONTENT: 'fastPaste.copyFilePathAndContent',
+    CMD_COPY_CURRENT_FILE_PATH_CONTENT: 'fastPaste.copyCurrentFilePathAndContent',
+    CMD_COPY_FOLDER_CONTENT: 'fastPaste.copyCurrentFolderPathAndContent',
+    CMD_COPY_PROJECT_STRUCTURE: 'fastPaste.copyProjectStructureAST',
 
-    CONFIG_BUTTON_CONFIG: 'buttonConfig',
+    CONFIG_SHOW_NOTIFICATIONS: 'showNotifications',
+    CONFIG_MAX_DEPTH: 'maxDepth',
+    CONFIG_FILE_EXTENSIONS: 'fileExtensions',
+    CONFIG_EXCLUDED_DIRECTORIES: 'excludedDirectories',
 
-    DEFAULT_BUTTON_CONFIG: [
-        {
-            name: 'Copy File Path and Content',
-            icon: 'copy',
-            command_vscode: 'extension.copyCurrentFilePathAndContent',
-        },
-        {
-            name: 'Copy Folder Content',
-            icon: 'file-code',
-            command_vscode: 'extension.copyCurrentFolderPathAndContent',
-        },
-        {
-            name: 'Copy Project Structure',
-            icon: 'code',
-            command_vscode: 'extension.copyProjectStructureAST',
-        },
-    ],
-
-    MAX_DEPTH: 5,
+    DEFAULT_SHOW_NOTIFICATIONS: true,
+    DEFAULT_MAX_DEPTH: 5,
+    DEFAULT_FILE_EXTENSIONS: ['.py', '.yaml', '.ini', '.html', '.js', '.css', '.scss', '.md', '.txt'],
+    DEFAULT_EXCLUDED_DIRECTORIES: ['venv', 'node_modules', '__pycache__', 'dist', 'build'],
 };

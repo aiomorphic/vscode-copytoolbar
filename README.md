@@ -1,71 +1,58 @@
-# CodeCopyToolbar
+# FastPaste toolbar
 
 [![Version](https://img.shields.io/visual-studio-marketplace/v/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
 
-<img src="resources/vs-code-extension-marketplace-cover-image.png" width="538" height="307" alt="CodeCopyToolbar Cover Image">
+<img src="resources/fastpaste-cover-image.png" width="538" height="307" alt="FastPaste Cover Image">
 
-**CodeCopyToolbar** is a Visual Studio Code extension designed to enhance your productivity by providing a customizable toolbar with advanced copy features. With this extension, you can easily copy file paths, content, and project structures directly from the editor.
+**FastPaste** is a lightning-fast Visual Studio Code extension tailored for developers who frequently interact with AI models like ChatGPT or Claude. With a fully customizable toolbar, **FastPaste** empowers you to swiftly copy file paths, content, and entire project structures, making it the perfect tool for seamless AI-driven coding.
 
 ## Features
 
-- **Customizable Toolbar:** Configure buttons on the toolbar to fit your workflow.
-- **Copy File Path and Content:** Quickly copy the file path and content of the current file.
-- **Copy Folder Content:** Copy the content of an entire folder, including nested files, while respecting `.gitignore` rules.
-- **Copy Project Structure and Docs:** Generate and copy a structural overview of your project, including documentation, while filtering out files and folders ignored by `.gitignore`.
-- **Remote Explorer Compatibility:** Works seamlessly with Remote Explorer, allowing you to use all features in SSH-connected remote environments, making it perfect for working on remote servers or virtual machines.
+- **Instant Copy Commands**:
+    - **File Path & Content**: Copy the file path and content of the active file with a single click, perfect for pasting directly into ChatGPT or Claude.
+    - **Folder Content**: Quickly copy all code files within a folder, while respecting `.gitignore` rules, to provide comprehensive context to AI models.
+    - **Project Structure & Docs**: Generate a clear overview of your project's structure using AST analysis and copy all relevant documentation files to streamline your interactions with AI models.
+- **Customizable Toolbar**: Customize your toolbar to align with your workflow, giving you one-click access to essential copy commands.
+- **Remote Explorer Compatibility**: Fully compatible with SSH-connected remote environments, making it effortless to copy and paste code, even when working on remote servers or virtual machines.
+
+## Why Choose FastPaste?
+
+If you frequently engage with AI tools like ChatGPT or Claude, **FastPaste** is the ultimate solution to accelerate your workflow. Whether you're debugging code, seeking AI assistance, or sharing project details, **FastPaste** ensures you can copy and paste your content faster than ever before.
+
+## Use Cases
+
+- **Rapid File Sharing**: Share file paths and content with AI models in seconds, making debugging and AI-driven coding sessions more efficient.
+- **Effortless Module Context**: Copy entire module contents to provide AI models with the necessary context without sharing the entire codebase.
+- **Streamlined Project Overview**: Quickly generate and copy project structures and documentation for enhanced AI interaction and project presentation.
 
 ### Toolbar screenshot
 
-![Image](resources/copytoolbar-toolbar.png)
+![Image](resources/fastpaste-toolbar.png)
 
 ### Files explorer context menu
 
-![Image](resources/copytoolbar-context-menu.png)
+![Image](resources/fastpaste-context-menu.png)
 
 
-## Use cases
+## Installation
 
-1. **Copy File Path and Content**
-
-For any active file opened in VS Code, you can use the `Copy File Path and Content` command (`copyCurrentFilePathAndContent`) from the toolbar or command palette. This command copies the content of the **selected file**.
-
-This feature is especially useful when you need to provide context about a specific file in your project to a language model (LLM).
-
-[Example of Copy File Path and Content](examples/single_file_copy.md)
-
-2. **Copy Folder Content**
-
-When navigating in the Files Explorer, you can select any file within a folder and use the `Copy Folder Content` command (`copyCurrentFolderPathAndContent`) from the toolbar or command palette. This command copies the content of **all code files in the selected folder and its subfolders**.
-
-This feature is particularly useful when you want to provide context about a specific module of your project to a language model (LLM) without including the entire project codebase.
-
-[Example of Copy Folder Content](examples/folder_copy.md)
-
-3. **Copy Project Structure and Docs**
-
-When you use the `Copy Project Structure and Docs` command (`copyProjectStructureAST`), the extension analyzes the Python project using Abstract Syntax Tree (AST) to generate a concise overview of the project's structure. Additionally, it copies the contents of all `.md` files, such as README and other documentation files.
-
-This feature is especially useful when you need to provide a detailed project context to a language model (LLM).
-
-[Example of Copy Project Structure and Docs](examples/project_structure.md)
-
-## Install via the Marketplace
+### Install via the Marketplace
 
 1. Open Visual Studio Code.
 2. Go to the Extensions view (`Ctrl+Shift+X`).
-3. Search for "CodeCopyToolbar".
+3. Search for "FastPaste".
 4. Click **Install**.
-5. Alternatively, you can install it directly via the following link: [CodeCopyToolbar on VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar).
+5. Alternatively, you can install it directly via the following link: [FastPaste on VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste).
 
 ### Install Manually from Source
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/aiomorphic/vscode-copytoolbar.git
-cd vscode-copytoolbar
+git clone https://github.com/aiomorphic/vscode-fastpaste.git
+cd vscode-fastpaste
 ```
 
 2. Install the necessary dependencies:
@@ -101,14 +88,13 @@ Click on any button to execute the corresponding action.
 You can access these commands through the command palette (`Ctrl+Shift+P`) or by using the associated toolbar buttons:
 
 - **Copy File Path and Content**: Copies the file path and content of the current file.  
-    Command: `extension.copyFilePathAndContent`
+    Command: `Copy File Path and Content`
     
 - **Copy Folder Content**: Copies the content of the folder containing the current file.  
-    Command: `extension.copyCurrentFolderPathAndContent`
+    Command: `Copy Folder Content`
     
 - **Copy Project Structure and Docs**: Analyzes the project's structure and documentation and copies it.  
-    Command: `extension.copyProjectStructureAST`
-    
+    Command: `Copy Project Structure`
 
 ### Keybindings
 
@@ -125,26 +111,6 @@ The extension integrates into the context menu in both the editor and the file e
 - **Editor Title Context Menu**: You can access the copy commands from the navigation group.
 - **File Explorer Context Menu**: The "Copy File Path and Content" command is available when right-clicking on files.
 
-## Configuration
+---
 
-You can customize the toolbar buttons by modifying the `CodeCopyToolbar.buttonConfig` setting in your `settings.json` file:
-
-```json
-"CodeCopyToolbar.buttonConfig": [
-    {
-        "name": "Copy File Path and Content",
-        "icon": "copy",
-        "command_vscode": "extension.copyCurrentFilePathAndContent"
-    },
-    {
-        "name": "Copy Folder Content",
-        "icon": "file-code",
-        "command_vscode": "extension.copyCurrentFolderPathAndContent"
-    },
-    {
-        "name": "Copy Project Structure",
-        "icon": "code",
-        "command_vscode": "extension.copyProjectStructureAST"
-    }
-]
-```
+Happy coding with FastPaste! 🚀

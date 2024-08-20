@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const fs = require('fs').promises;
 const path = require('path');
-const constants = require('./constants');
+const ConfigManager = require('./configManager');
 
 class Utils {
     static async copyToClipboard(text) {
@@ -9,7 +9,8 @@ class Utils {
     }
 
     static async getFolderContent(folderPath, depth = 0) {
-        if (depth > constants.MAX_DEPTH) return '';
+        const maxDepth = ConfigManager.getMaxDepth();
+        if (depth > maxDepth) return '';
 
         let content = '';
         const files = await fs.readdir(folderPath);

@@ -4,25 +4,31 @@ const constants = require('./constants');
 class ToolbarManager {
     constructor(context) {
         this.context = context;
-        console.log('ToolbarManager constructor called');
-        this.updateToolbar();
+        this.toolbarItems = [];
+        this.createFixedToolbar();
     }
+    
+    createFixedToolbar() {
+        const buttons = [
+            { name: 'Copy File', icon: 'file', command: constants.CMD_COPY_CURRENT_FILE_PATH_CONTENT },
+            { name: 'Copy Folder', icon: 'folder', command: constants.CMD_COPY_FOLDER_CONTENT },
+            { name: 'Copy Project', icon: 'project', command: constants.CMD_COPY_PROJECT_STRUCTURE }
+        ];
 
-    updateToolbar() {
-        console.log('Updating toolbar');
+        buttons.forEach((button, index) => {
+            const newButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, index);
+            newButton.text = `$(${button.icon}) ${button.name}`;
+            newButton.command = button.command;
+            newButton.tooltip = `Click to ${button.name}`;
+            newButton.show();
 
-
-        const config = vscode.workspace.getConfiguration(constants.EXTENSION_NAME);
-        const buttonConfig = config.get('buttonConfig', constants.DEFAULT_BUTTON_CONFIG);
-        console.log('Button config:', JSON.stringify(buttonConfig));
-
-
-
-        console.log(`Toolbar configuration updated with ${buttonConfig.length} items`);
+            this.toolbarItems.push(newButton);
+        });
     }
 
     dispose() {
-
+        this.toolbarItems.forEach(item => item.dispose());
+        this.toolbarItems = [];
     }
 }
 

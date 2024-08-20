@@ -2,6 +2,7 @@
 node_modules/
 *.vsix
 .vscode-test/
-mypy_cache/
+*mypy_cache/
 venv/
 package-lock.json
+todo
