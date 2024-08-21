@@ -2,7 +2,7 @@
     "name": "fastpaste",
     "displayName": "FastPaste",
     "description": "The Fastest Way to Copy and Paste to ChatGPT or Claude",
-    "version": "1.0.4",
+    "version": "1.0.6",
     "publisher": "Aiomorphic",
     "icon": "resources/fastpaste-icon.png",
     "engines": {

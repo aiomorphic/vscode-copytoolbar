@@ -32,9 +32,6 @@ File: vs_code_plugins/vscode-copytoolbar/src/code_analyzer.py (Lines: 132)
 
 /CHANGELOG.md:
 
-
-
-
 ---
 
 /README.md:
@@ -142,24 +139,4 @@ The extension integrates into the context menu in both the editor and the file e
 
 ## Configuration
 
-You can customize the toolbar buttons by modifying the `CodeCopyToolbar.buttonConfig` setting in your `settings.json` file:
-
-```json
-"CodeCopyToolbar.buttonConfig": [
-    {
-        "name": "Copy File Path and Content",
-        "icon": "copy",
-        "command_vscode": "extension.copyCurrentFilePathAndContent"
-    },
-    {
-        "name": "Copy Folder Content",
-        "icon": "file-code",
-        "command_vscode": "extension.copyCurrentFolderPathAndContent"
-    },
-    {
-        "name": "Copy Project Structure",
-        "icon": "code",
-        "command_vscode": "extension.copyProjectStructureAST"
-    }
-]
-```
+You can customize the toolbar buttons by modifying the `CodeCopyToolbar.buttonConfig` setting in your `settings.json` file

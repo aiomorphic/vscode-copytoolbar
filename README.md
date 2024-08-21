@@ -1,11 +1,5 @@
 # FastPaste toolbar
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
-
-<img src="resources/fastpaste-cover-image.png" width="538" height="307" alt="FastPaste Cover Image">
-
 **FastPaste** is a lightning-fast Visual Studio Code extension tailored for developers who frequently interact with AI models like GPT or Claude. With a fully customizable toolbar, **FastPaste** empowers you to swiftly copy file paths, content, and entire project structures, making it the perfect tool for seamless AI-driven coding.
 
 ## Features
@@ -112,5 +106,10 @@ The extension integrates into the context menu in both the editor and the file e
 - **File Explorer Context Menu**: The "Copy File Path and Content" command is available when right-clicking on files.
 
 ---
+
+
+[![Version](https://img.shields.io/visual-studio-marketplace/v/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
 
 Happy coding with FastPaste! 🚀
