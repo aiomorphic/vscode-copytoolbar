@@ -1,17 +1,17 @@
 # FastPaste toolbar
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/Aiomorphic.codecopytoolbar)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.codecopytoolbar)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/Aiomorphic.fastpaste)](https://marketplace.visualstudio.com/items?itemName=Aiomorphic.fastpaste)
 
 <img src="resources/fastpaste-cover-image.png" width="538" height="307" alt="FastPaste Cover Image">
 
-**FastPaste** is a lightning-fast Visual Studio Code extension tailored for developers who frequently interact with AI models like ChatGPT or Claude. With a fully customizable toolbar, **FastPaste** empowers you to swiftly copy file paths, content, and entire project structures, making it the perfect tool for seamless AI-driven coding.
+**FastPaste** is a lightning-fast Visual Studio Code extension tailored for developers who frequently interact with AI models like GPT or Claude. With a fully customizable toolbar, **FastPaste** empowers you to swiftly copy file paths, content, and entire project structures, making it the perfect tool for seamless AI-driven coding.
 
 ## Features
 
 - **Instant Copy Commands**:
-    - **File Path & Content**: Copy the file path and content of the active file with a single click, perfect for pasting directly into ChatGPT or Claude.
+    - **File Path & Content**: Copy the file path and content of the active file with a single click, perfect for pasting directly into GPT or Claude.
     - **Folder Content**: Quickly copy all code files within a folder, while respecting `.gitignore` rules, to provide comprehensive context to AI models.
     - **Project Structure & Docs**: Generate a clear overview of your project's structure using AST analysis and copy all relevant documentation files to streamline your interactions with AI models.
 - **Customizable Toolbar**: Customize your toolbar to align with your workflow, giving you one-click access to essential copy commands.

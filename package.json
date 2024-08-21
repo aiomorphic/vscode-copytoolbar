@@ -2,14 +2,16 @@
     "name": "fastpaste",
     "displayName": "FastPaste",
     "description": "The Fastest Way to Copy and Paste to ChatGPT or Claude",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "publisher": "Aiomorphic",
     "icon": "resources/fastpaste-icon.png",
     "engines": {
       "vscode": "^1.82.0"
     },
     "categories": [
-      "Other"
+      "AI",
+      "Programming Languages",
+      "Snippets"
     ],
     "activationEvents": [
       "onStartupFinished"
