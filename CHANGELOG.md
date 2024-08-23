@@ -6,7 +6,6 @@
 
 - **New Toolbar Icons:** Updated the toolbar with new icons for better visual clarity and user experience.
 - **Keyboard Shortcuts:** Added keyboard shortcuts for faster and more efficient access to key features.
-- **Rebranding:** **FastPaste** is now a lightning-fast Visual Studio Code extension tailored for developers who frequently interact with AI models like ChatGPT or Claude. With a fully customizable toolbar, **FastPaste** empowers you to swiftly copy file paths, content, and entire project structures, making it the perfect tool for seamless AI-driven coding.
 
 ## 1.0.1
 
