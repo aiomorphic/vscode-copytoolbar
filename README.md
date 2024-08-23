@@ -15,9 +15,9 @@ When you're working on large production projects with complex codebases, providi
 ## Features
 
 - **Instant Copy Commands**:
-    - <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="m4 4l1-1h5.414L14 6.586V14l-1 1H5l-1-1zm9 3l-3-3H5v10h8z"/><path d="M3 1L2 2v10l1 1V2h6.414l-1-1z"/></svg> **File Path & Content**: Copy the file path and content of the active file in one click.
-    - <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2 11h1V6.99H2zm1-5.01V5.5l.5-.5h4.43l.43.25.43.75h5.71l.5.5v8l-.5.5h-11l-.5-.5V12H1.5l-.5-.5v-9l.5-.5h4.42l.44.25.43.75h5.71l.5.5V6l-1-.03V4H6.5l-.43-.25L5.64 3H2v2.99zm5.07.76L7.64 6H4v3h3.15l.41-.74L8 8h6V7H8.5zM7.45 10H4v4h10V9H8.3l-.41.74z"/></svg> **Folder Content**: Copy all code files within a folder, respecting .gitignore rules, to provide comprehensive context to AI models. Copy entire module contents to provide AI models with the necessary context without sharing the entire codebase.
-    - <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2 2L1 3v3l1 1h12l1-1V3l-1-1zm0 1h12v3H2zm-1 7l1-1h3l1 1v3l-1 1H2l-1-1zm2 0H2v3h3v-3zm7 0l1-1h3l1 1v3l-1 1h-3l-1-1zm2 0h-1v3h3v-3z"/></svg> **Project Structure & Docs**: Generate and copy your project's structure using AST analysis, ensuring AI understands the full scope of your project.
+    - ![File Path & Content](resources/codicon--copy.png) **File Path & Content**: Copy the file path and content of the active file in one click.
+    - ![Folder Content](resources/codicon--file-submodule.png) **Folder Content**: Copy all code files within a folder, respecting .gitignore rules, to provide comprehensive context to AI models. Copy entire module contents to provide AI models with the necessary context without sharing the entire codebase.
+    - ![Project Structure & Docs](resources/codicon--symbol-structure.png) **Project Structure & Docs**: Generate and copy your project's structure using AST analysis, ensuring AI understands the full scope of your project.
 - **Remote Explorer Compatibility**: Fully compatible with SSH-connected remote environments, making it effortless to copy and paste code, even when working on remote servers or virtual machines.
 - **File Explorer Context Menu**: Select several files in File Explorer and use the `Copy File Path and Content` command to quickly share relevant code with AI tools.
 
