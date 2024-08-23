@@ -15,6 +15,6 @@ module.exports = {
 
     DEFAULT_SHOW_NOTIFICATIONS: true,
     DEFAULT_MAX_DEPTH: 5,
-    DEFAULT_FILE_EXTENSIONS: ['.py', '.yaml', '.ini', '.html', '.js', '.css', '.scss', '.md', '.txt'],
+    DEFAULT_FILE_EXTENSIONS: ['.py', '.yaml', '.yml', '.ini', '.cfg', '.html', '.js', '.jsx', '.css', '.scss', '.md', '.txt', '.php', '.java', '.c', '.cpp', '.cs', '.rb', '.go', '.rs', '.ts', '.tsx', '.sh', '.xml', '.json', '.swift', '.kt'],
     DEFAULT_EXCLUDED_DIRECTORIES: ['venv', 'node_modules', '__pycache__', 'dist', 'build'],
 };

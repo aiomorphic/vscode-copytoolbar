@@ -1,5 +1,39 @@
 # Change Log
 
+## 1.0.8
+
+The list of supported code file extensions for copying has been extended to include:
+
+```
+    '.py',    # Python
+    '.yaml',  # YAML
+    '.yml',   # YAML (alternative extension)
+    '.ini',   # INI configuration files
+    '.cfg',   # Configuration files
+    '.html',  # HTML
+    '.js',    # JavaScript
+    '.jsx',   # JavaScript JSX
+    '.css',   # CSS
+    '.scss',  # SASS/SCSS
+    '.md',    # Markdown
+    '.txt',   # Text files
+    '.php',   # PHP
+    '.java',  # Java
+    '.c',     # C
+    '.cpp',   # C++
+    '.cs',    # C#
+    '.rb',    # Ruby
+    '.go',    # Go
+    '.rs',    # Rust
+    '.ts',    # TypeScript
+    '.tsx',   # TypeScript JSX
+    '.sh',    # Shell scripts
+    '.xml',   # XML
+    '.json',  # JSON
+    '.swift', # Swift
+    '.kt',    # Kotlin
+```
+
 ## 1.0.2
 
 ### Improvements and Enhancements
