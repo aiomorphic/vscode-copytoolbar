@@ -10,21 +10,15 @@ function activate(context) {
 
     toolbarManager = new ToolbarManager(context);
 
-    
-    let disposable = vscode.commands.registerCommand(constants.CMD_COPY_FILE_PATH_CONTENT, async (uri, uris) => {
+    context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_FILE_PATH_CONTENT, async (uri, uris) => {
         if (uris && uris.length > 0) {
-            
             await CopyFeatures.copyMultipleFilesPathAndContent(uris);
         } else if (uri && uri.scheme === 'file') {
-            
             await CopyFeatures.copyFilePathAndContent(uri);
         } else {
-            
             await CopyFeatures.copyFilePathAndContent(undefined);
         }
-    });
-    context.subscriptions.push(disposable);
-
+    }));
     
     context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_CURRENT_FILE_PATH_CONTENT, async () => {
         await CopyFeatures.copyFilePathAndContent();
@@ -36,6 +30,14 @@ function activate(context) {
 
     context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_PROJECT_STRUCTURE, async () => {
         await CopyFeatures.copyProjectStructureAST();
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_JS_PROJECT_STRUCTURE, async () => {
+        await CopyFeatures.copyJSProjectStructure();
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_MD_DOCS_AND_DOCSTRINGS, async () => {
+        await CopyFeatures.copyMDDocsAndDocstrings();
     }));
 
     console.log('FastPaste activation completed');

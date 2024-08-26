@@ -2,7 +2,7 @@
     "name": "fastpaste",
     "displayName": "FastPaste",
     "description": "The Fastest Way to Copy and Paste to ChatGPT or Claude",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "publisher": "Aiomorphic",
     "icon": "resources/fastpaste-icon.png",
     "engines": {
@@ -45,9 +45,19 @@
             },
             {
                 "command": "fastPaste.copyProjectStructureAST",
-                "title": "Copy Project Structure",
+                "title": "Copy Python Project Structure",
                 "icon": "$(symbol-struct)"
-            }
+            },
+            {
+                "command": "fastPaste.copyJSProjectStructure",
+                "title": "Copy JS Project Structure",
+                "icon": "$(json)"
+            },
+            {
+                "command": "fastPaste.copyMDDocsAndDocstrings",
+                "title": "Copy MD Docs and docstrings content",
+                "icon": "$(markdown)"
+            }            
         ],
         "menus": {
             "editor/title": [
@@ -62,6 +72,14 @@
                 {
                     "command": "fastPaste.copyProjectStructureAST",
                     "group": "navigation"
+                },
+                {
+                    "command": "fastPaste.copyJSProjectStructure",
+                    "group": "navigation"
+                },
+                {
+                    "command": "fastPaste.copyMDDocsAndDocstrings",
+                    "group": "navigation"
                 }
             ],
             "explorer/context": [
@@ -71,6 +89,7 @@
                     "group": "copy"
                 }
             ]
+
         }
     },
     "keybindings": [
@@ -118,7 +137,8 @@
         "vscode-test": "^1.6.1"
     },
     "dependencies": {
-        "ignore": "^5.2.0"
+        "ignore": "^5.2.0",
+        "@babel/parser": "^7.22.5"
     },
     "extensionKind": [
         "workspace",

@@ -1,9 +1,7 @@
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs').promises;
-const {
-    exec
-} = require('child_process');
+const { exec } = require('child_process');
 const os = require('os');
 const ignore = require('ignore');
 const ConfigManager = require('./configManager');
@@ -50,7 +48,7 @@ class CopyFeatures {
             return;
         }
 
-        const pythonScript = path.join(__dirname, 'code_analyzer.py');
+        const pythonScript = path.join(__dirname, 'python_project_structure.py');
         const tempFile = path.join(os.tmpdir(), 'project_structure_output.txt');
 
         exec(`python3 ${pythonScript} ${targetDirectory} > ${tempFile}`, async (err, stdout, stderr) => {
@@ -66,47 +64,136 @@ class CopyFeatures {
                     return;
                 }
 
-                const mdFilesContent = await CopyFeatures.collectMarkdownFiles(targetDirectory);
-                const combinedOutput = mdFilesContent.trim() ?
-                    `${pythonOutput}\n\n# Related Documentation\n${mdFilesContent}` :
-                    pythonOutput;
+                await vscode.env.clipboard.writeText(pythonOutput);
+                vscode.window.showInformationMessage('Python project structure copied to clipboard.');
+            } catch (readErr) {
+                vscode.window.showErrorMessage(`Error reading output file: ${readErr.message}`);
+            } finally {
+                // Clean up the temporary file
+                fs.unlink(tempFile).catch(console.error);
+            }
+        });
+    }
 
-                await vscode.env.clipboard.writeText(combinedOutput);
-                vscode.window.showInformationMessage('Project structure and related docs copied to clipboard.');
+    static async loadGitignore(workspaceRoot) {
+        const gitignorePath = path.join(workspaceRoot, '.gitignore');
+        try {
+            const gitignoreContent = await fs.readFile(gitignorePath, 'utf-8');
+            return ignore().add(gitignoreContent);
+        } catch (err) {
+            console.warn(`Could not read .gitignore file: ${err.message}`);
+            return null;
+        }
+    }
+
+    static async copyJSProjectStructure() {
+        const editor = vscode.window.activeTextEditor;
+        const targetDirectory = editor ?
+            path.dirname(editor.document.uri.fsPath) :
+            vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+
+        if (!targetDirectory) {
+            vscode.window.showInformationMessage('No workspace is opened.');
+            return;
+        }
+
+        const jsScript = path.join(__dirname, 'js_project_structure.js');
+        const tempFile = path.join(os.tmpdir(), 'js_project_structure_output.txt');
+
+        exec(`node ${jsScript} ${targetDirectory} > ${tempFile}`, async (err, stdout, stderr) => {
+            if (err) {
+                vscode.window.showErrorMessage(`Error running JS script: ${stderr}`);
+                return;
+            }
+
+            try {
+                const jsOutput = await fs.readFile(tempFile, 'utf-8');
+                if (jsOutput.trim() === '') {
+                    vscode.window.showErrorMessage('JS script returned empty output. Nothing to copy.');
+                    return;
+                }
+
+                await vscode.env.clipboard.writeText(jsOutput);
+                vscode.window.showInformationMessage('JS Project structure copied to clipboard.');
             } catch (readErr) {
                 vscode.window.showErrorMessage(`Error reading output file: ${readErr.message}`);
             }
         });
     }
 
-    static async collectMarkdownFiles(rootPath) {
-        const ig = await this.loadGitignore(rootPath);
+    static async copyMDDocsAndDocstrings() {
+        const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        if (!workspaceRoot) {
+            vscode.window.showInformationMessage('No workspace is opened.');
+            return;
+        }
+
+        const ig = await this.loadGitignore(workspaceRoot);
+        const mdContent = await this.collectMarkdownFiles(workspaceRoot, ig);
+        const docstringsContent = await this.extractDocstrings(workspaceRoot);
+
+        const combinedContent = `${mdContent}\n\n${docstringsContent}`;
+
+        if (combinedContent.trim() === '') {
+            vscode.window.showInformationMessage('No Markdown files or Python docstrings found in the project.');
+            return;
+        }
+
+        await vscode.env.clipboard.writeText(combinedContent);
+        vscode.window.showInformationMessage('Markdown docs and Python docstrings content copied to clipboard.');
+    }
+
+    static async extractDocstrings(workspaceRoot) {
+        const pythonScript = path.join(__dirname, 'copy_docstrings.py');
+        const tempFile = path.join(os.tmpdir(), 'docstrings_output.txt');
+
+        return new Promise((resolve, reject) => {
+            exec(`python3 ${pythonScript} ${workspaceRoot} ${tempFile}`, async (err, stdout, stderr) => {
+                if (err) {
+                    vscode.window.showErrorMessage(`Error running Python script: ${stderr}`);
+                    reject(err);
+                    return;
+                }
+
+                try {
+                    const docstringsOutput = await fs.readFile(tempFile, 'utf-8');
+                    resolve(docstringsOutput);
+                } catch (readErr) {
+                    vscode.window.showErrorMessage(`Error reading docstrings output file: ${readErr.message}`);
+                    reject(readErr);
+                } finally {
+                    fs.unlink(tempFile).catch(console.error);
+                }
+            });
+        });
+    }
+
+    static async collectMarkdownFiles(rootPath, ig) {
         const results = [];
 
         async function traverseDirectory(directory) {
-            const entries = await fs.readdir(directory, {
-                withFileTypes: true
-            });
+            const entries = await fs.readdir(directory, { withFileTypes: true });
 
-            await Promise.all(
-                entries.map(async (entry) => {
-                    const fullPath = path.join(directory, entry.name);
-                    if (ig.ignores(path.relative(rootPath, fullPath))) {
-                        return;
-                    }
+            for (const entry of entries) {
+                const fullPath = path.join(directory, entry.name);
+                const relativePath = path.relative(rootPath, fullPath);
+                
+                if (ig && ig.ignores(relativePath)) {
+                    continue;
+                }
 
-                    if (entry.isDirectory()) {
-                        await traverseDirectory(fullPath);
-                    } else if (entry.isFile() && entry.name.endsWith('.md')) {
-                        try {
-                            const fileContent = await fs.readFile(fullPath, 'utf-8');
-                            results.push(`---\n\n/${path.relative(rootPath, fullPath)}:\n\n${fileContent}\n\n`);
-                        } catch (err) {
-                            vscode.window.showErrorMessage(`Error reading markdown file: ${err.message}`);
-                        }
+                if (entry.isDirectory()) {
+                    await traverseDirectory(fullPath);
+                } else if (entry.isFile() && entry.name.endsWith('.md')) {
+                    try {
+                        const fileContent = await fs.readFile(fullPath, 'utf-8');
+                        const separator = '-'.repeat(23);
+                        results.push(`${separator}\n\n/${relativePath}:\n\n${separator}\n\n${fileContent}\n\n`);
+                    } catch (err) {
+                        vscode.window.showErrorMessage(`Error reading markdown file: ${err.message}`);
                     }
-                })
-            );
+                }
+            }
         }
 
         await traverseDirectory(rootPath);

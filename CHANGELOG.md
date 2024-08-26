@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.9
+
+### New Features
+
+- **JavaScript Project Structure:** Added support for copying the structure of JavaScript projects.
+- **Markdown and Docstring Support:** You can now copy both Markdown documentation files and Python docstrings together.
+- **Toolbar Enhancements:** New toolbar buttons have been added for copying JavaScript project structures and Markdown documentation with Python docstrings.
+- **Python Project Structure:** The Python project structure now includes only Python code-related information, along with the details of the last Git commit.
+
 ## 1.0.8
 
 The list of supported code file extensions for copying has been extended to include:

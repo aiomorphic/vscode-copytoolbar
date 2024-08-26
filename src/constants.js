@@ -7,6 +7,8 @@ module.exports = {
     CMD_COPY_CURRENT_FILE_PATH_CONTENT: 'fastPaste.copyCurrentFilePathAndContent',
     CMD_COPY_FOLDER_CONTENT: 'fastPaste.copyCurrentFolderPathAndContent',
     CMD_COPY_PROJECT_STRUCTURE: 'fastPaste.copyProjectStructureAST',
+    CMD_COPY_JS_PROJECT_STRUCTURE: 'fastPaste.copyJSProjectStructure',
+    CMD_COPY_MD_DOCS_AND_DOCSTRINGS: 'fastPaste.copyMDDocsAndDocstrings',
 
     CONFIG_SHOW_NOTIFICATIONS: 'showNotifications',
     CONFIG_MAX_DEPTH: 'maxDepth',
