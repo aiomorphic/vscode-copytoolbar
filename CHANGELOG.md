@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.1.0
+
+- **Whitespace Optimization:** Added automatic whitespace removal feature to reduce token consumption.
+    - Trims leading/trailing whitespace from each line
+    - Removes empty lines at start and end of content
+    - Reduces multiple consecutive empty lines to a single empty line
+- **Configuration Option:** New `FastPaste.enableWhitespaceRemoval` setting to toggle whitespace optimization
+- **Keybinding Updates:** Added keyboard shortcuts for new commands
+- **Project Structure:** Improved JavaScript and Python project structure analysis
+- **Performance:** Optimized file reading and processing for better performance
+- **Dependencies:** Updated and cleaned up project dependencies
+
 ## 1.0.9
 
 ### New Features

@@ -6,3 +6,15 @@ logs/
 dist/
 *.log
 todo
+
+.vscode/**
+.vscode-test/**
+node_modules/**
+.gitignore
+.yarnrc
+**/tsconfig.json
+**/test/**
+**/.eslintrc.json
+**/*.map
+**/*.ts
+yarn.lock

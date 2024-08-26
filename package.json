@@ -2,37 +2,42 @@
     "name": "fastpaste",
     "displayName": "FastPaste",
     "description": "The Fastest Way to Copy and Paste to ChatGPT or Claude",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "publisher": "Aiomorphic",
     "icon": "resources/fastpaste-icon.png",
     "engines": {
-      "vscode": "^1.82.0"
+        "vscode": "^1.82.0"
     },
     "categories": [
-      "AI",
-      "Programming Languages",
-      "Snippets"
+        "AI",
+        "Programming Languages",
+        "Snippets"
     ],
     "activationEvents": [
-      "onStartupFinished"
+        "onStartupFinished"
     ],
     "main": "./src/extension.js",
     "contributes": {
-      "configuration": {
-        "title": "FastPaste",
-        "properties": {
-          "FastPaste.buttonConfig": {
-            "type": "array",
-            "description": "Configuration for toolbar buttons"
-          },
-          "FastPaste.showNotifications": {
-            "type": "boolean",
-            "default": true,
-            "description": "Show toast notifications when copying content"
-          }
-        }
-      },
-      "commands": [
+        "configuration": {
+            "title": "FastPaste",
+            "properties": {
+                "FastPaste.buttonConfig": {
+                    "type": "array",
+                    "description": "Configuration for toolbar buttons"
+                },
+                "FastPaste.showNotifications": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show toast notifications when copying content"
+                },
+                "FastPaste.enableWhitespaceRemoval": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable removal of unnecessary whitespace when copying file content"
+                }
+            }
+        },
+        "commands": [
             {
                 "command": "fastPaste.copyFilePathAndContent",
                 "title": "Copy File Path and Content",
@@ -57,7 +62,7 @@
                 "command": "fastPaste.copyMDDocsAndDocstrings",
                 "title": "Copy MD Docs and docstrings content",
                 "icon": "$(markdown)"
-            }            
+            }
         ],
         "menus": {
             "editor/title": [
@@ -89,31 +94,35 @@
                     "group": "copy"
                 }
             ]
-
-        }
+        },
+        "keybindings": [
+            {
+                "command": "fastPaste.copyFilePathAndContent",
+                "key": "ctrl+alt+c",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "fastPaste.copyCurrentFolderPathAndContent",
+                "key": "ctrl+alt+f",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "fastPaste.copyProjectStructureAST",
+                "key": "ctrl+alt+s",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "fastPaste.copyJSProjectStructure",
+                "key": "ctrl+alt+j",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "fastPaste.copyMDDocsAndDocstrings",
+                "key": "ctrl+alt+d",
+                "when": "editorTextFocus"
+            }
+        ]
     },
-    "keybindings": [
-        {
-            "command": "fastPaste.copyCurrentFilePathAndContent",
-            "key": "ctrl+alt+c",
-            "when": "editorTextFocus"
-        },
-        {
-            "command": "fastPaste.copyOpenTabsPathAndContent",
-            "key": "ctrl+alt+a",
-            "when": "editorTextFocus"
-        },
-        {
-            "command": "fastPaste.copyCurrentFolderPathAndContent",
-            "key": "ctrl+alt+f",
-            "when": "editorTextFocus"
-        },
-        {
-            "command": "fastPaste.copyProjectStructureAST",
-            "key": "ctrl+alt+s",
-            "when": "editorTextFocus"
-        }
-    ],
     "scripts": {
         "lint": "eslint .",
         "pretest": "npm run lint",
@@ -129,16 +138,14 @@
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-plugin-import": "^2.29.1",
         "glob": "^7.1.7",
-        "inquirer": "^10.1.8",
         "mocha": "^8.4.0",
         "typescript": "^4.3.2",
         "vsce": "^2.15.0",
-        "vscode": "^1.1.37",
         "vscode-test": "^1.6.1"
     },
     "dependencies": {
-        "ignore": "^5.2.0",
-        "@babel/parser": "^7.22.5"
+        "@babel/parser": "^7.25.4",
+        "ignore": "^5.2.0"
     },
     "extensionKind": [
         "workspace",

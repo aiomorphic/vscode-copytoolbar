@@ -1,4 +1,5 @@
 import ast
+import sys
 import os
 import subprocess
 from collections import defaultdict
@@ -170,8 +171,8 @@ def get_git_info(directory):
         return None, None, None
 
 
-def analyze_directory(directory, patterns=None):
-    print(f"Project structure of directory: {directory}")
+def analyze_directory(project_root, patterns=None):
+    print(f"Project structure of directory: {project_root}")
     results = []
     total_lines = 0
     total_files = 0
@@ -182,7 +183,7 @@ def analyze_directory(directory, patterns=None):
 
     excluded_dirs = {"venv", "node_modules", "__pycache__", "dist", "build"}
 
-    for subdir, _, files in os.walk(directory):
+    for subdir, _, files in os.walk(project_root):
         if any(excluded_dir in subdir.split(os.sep) for excluded_dir in excluded_dirs):
             continue
 
@@ -199,13 +200,16 @@ def analyze_directory(directory, patterns=None):
                     total_lines += analyzer.lines_of_code
                     total_docstrings += analyzer.docstrings
 
-                    module_name = os.path.relpath(subdir, directory)
+                    module_name = os.path.relpath(subdir, project_root)
                     modules[module_name]["files"].append(
                         format_analysis(analyzer, file_path)
                     )
                     modules[module_name]["total_lines"] += analyzer.lines_of_code
                     modules[module_name]["total_files"] += 1
                     modules[module_name]["total_docstrings"] += analyzer.docstrings
+
+    if total_files == 0:
+        return "No Python files found in the project."
 
     if total_lines > 0:
         docstring_density = f"{(total_docstrings / total_lines):.2%}"
@@ -241,21 +245,23 @@ def analyze_directory(directory, patterns=None):
 
 
 if __name__ == "__main__":
-    import sys
-
     if len(sys.argv) != 2:
-        print("Usage: python3 src/code_analyzer.py <directory>")
+        print("Usage: python3 src/python/project_structure.py <project_root>")
         sys.exit(1)
 
-    directory = sys.argv[1]
+    project_root = sys.argv[1]
 
-    patterns = load_gitignore(directory)
-    branch, last_commit, author = get_git_info(directory)
-    venv_version, venv_packages = get_virtual_env_info(directory)
+    if not os.path.isdir(project_root):
+        print(f"Error: {project_root} is not a valid directory.")
+        sys.exit(1)
+
+    patterns = load_gitignore(project_root)
+    branch, last_commit, author = get_git_info(project_root)
+    venv_version, venv_packages = get_virtual_env_info(project_root)
 
     project_overview = [
         "# Project Overview",
-        f"- Project Path: {directory}",
+        f"- Project Path: {project_root}",
         "- Programming Languages: Python",
     ]
 
@@ -270,5 +276,9 @@ if __name__ == "__main__":
 
     print("\n".join(project_overview) + "\n")
 
-    result = analyze_directory(directory, patterns)
-    print(result)
+    result = analyze_directory(project_root, patterns)
+
+    if result == "No Python files found in the project.":
+        print(result)
+    else:
+        print(result)

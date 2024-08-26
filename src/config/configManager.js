@@ -25,6 +25,10 @@ class ConfigManager {
     static getExcludedDirectories() {
         return this.getConfig('excludedDirectories', constants.DEFAULT_EXCLUDED_DIRECTORIES);
     }
+
+    static getEnableWhitespaceRemoval() {
+        return this.getConfig('enableWhitespaceRemoval', false);
+    }
 }
 
 module.exports = ConfigManager;

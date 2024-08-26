@@ -175,13 +175,20 @@ function analyzeDirectory(directory, ig) {
         );
     }
 
+    if (totalFiles === 0) {
+        return { totalFiles, result: '' };
+    }
+
     const projectSummary = [
         `Project Summary:`,
         `  Total Files: ${totalFiles}`,
         `  Total Lines of Code: ${totalLines}`
     ];
 
-    return projectSummary.join('\n') + '\n\n' + results.join('\n');
+    return { 
+        totalFiles, 
+        result: projectSummary.join('\n') + '\n\n' + results.join('\n')
+    };
 }
 
 function generateReport(directory) {
@@ -199,7 +206,12 @@ function generateReport(directory) {
     }
 
     const analysisResult = analyzeDirectory(directory, ig);
-    return header.join('\n') + '\n\n' + analysisResult;
+    
+    if (analysisResult.totalFiles === 0) {
+        return header.join('\n') + '\n\nNo JavaScript or TypeScript files found in the project.';
+    }
+
+    return header.join('\n') + '\n\n' + analysisResult.result;
 }
 
 if (require.main === module) {

@@ -117,8 +117,13 @@ def is_ignored(path, patterns):
 
 
 def extract_project_docstrings(directory, patterns=None):
-    all_docstrings = ["# Python Docstrings"]
+    all_docstrings = []
+    excluded_dirs = {"venv", "node_modules", "__pycache__", "dist", "build"}
+
     for root, _, files in os.walk(directory):
+        if any(excluded_dir in root.split(os.sep) for excluded_dir in excluded_dirs):
+            continue
+
         if is_ignored(root, patterns):
             continue
 
@@ -134,7 +139,8 @@ def extract_project_docstrings(directory, patterns=None):
                     formatted_docstrings = extractor.get_formatted_docstrings()
                     if formatted_docstrings.strip():
                         all_docstrings.append(formatted_docstrings)
-    return "\n\n".join(all_docstrings)
+
+    return "# Python Docstrings\n\n" + "\n\n".join(all_docstrings) if all_docstrings else ""
 
 
 def save_docstrings_to_file(docstrings, output_file):
@@ -154,6 +160,10 @@ if __name__ == "__main__":
 
     patterns = load_gitignore(directory)
     docstrings = extract_project_docstrings(directory, patterns)
+    
     save_docstrings_to_file(docstrings, output_file)
-
-    print(f"Extracted and formatted docstrings to {output_file}")
+    
+    if docstrings:
+        print(f"Extracted and formatted docstrings to {output_file}")
+    else:
+        print("No docstrings found in the project.")

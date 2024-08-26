@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const CopyFeatures = require('./copyFeatures');
 const ToolbarManager = require('./toolbarManager');
-const constants = require('./constants');
+const constants = require('./config/constants');
 
 let toolbarManager;
 

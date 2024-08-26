@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const constants = require('./constants');
+const constants = require('./config/constants');
 
 class ToolbarManager {
     constructor(context) {
