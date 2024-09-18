@@ -15,11 +15,11 @@ When you're working on large production projects with complex codebases, providi
 ## Features
 
 - **Instant Copy Commands**:
-    - ![File Path & Content](resources/codicon--copy.png) **File Path & Content**: Copy the file path and content of the active file in one click.
-    - ![Folder Content](resources/codicon--file-submodule.png) **Folder Content**: Copy all code files within a folder, respecting .gitignore rules, to provide comprehensive context to AI models. Copy entire module contents to provide AI models with the necessary context without sharing the entire codebase.
-    - ![Project Structure & Docs](resources/codicon--symbol-structure.png) **Project Structure & Docs**: Generate and copy your project's structure using AST analysis, ensuring AI understands the full scope of your project.
-    - ![JS Project Structure](resources/codicon--json.png) **JS Project Structure**: Analyze and copy the structure of JavaScript/TypeScript projects.
-    - ![MD Docs & Docstrings](resources/codicon--markdown.png) **MD Docs & Docstrings**: Copy Markdown documentation and Python docstrings.
+    - ![File Path & Content](resources/inverted_codicon--copy.png) **File Path & Content**: Copy the file path and content of the active file in one click.
+    - ![Folder Content](resources/inverted_codicon--file-submodule.png) **Folder Content**: Copy all code files within a folder, respecting .gitignore rules, to provide comprehensive context to AI models. Copy entire module contents to provide AI models with the necessary context without sharing the entire codebase.
+    - ![Project Structure & Docs](resources/inverted_codicon--symbol-structure.png) **Project Structure & Docs**: Generate and copy your project's structure using AST analysis, ensuring AI understands the full scope of your project.
+    - ![JS Project Structure](resources/inverted_codicon--json.png) **JS Project Structure**: Analyze and copy the structure of JavaScript/TypeScript projects.
+    - ![MD Docs & Docstrings](resources/inverted_codicon--markdown.png) **MD Docs & Docstrings**: Copy Markdown documentation and Python docstrings.
     
 - **Remote Explorer Compatibility**: Fully compatible with SSH-connected remote environments, making it effortless to copy and paste code, even when working on remote servers or virtual machines.
 - **File Explorer Context Menu**: Select several files in File Explorer and use the `Copy File Path and Content` command to quickly share relevant code with AI tools.
