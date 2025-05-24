@@ -136,6 +136,7 @@ function analyzeDirectory(directory, ig) {
     function traverseDirectory(subdir) {
         fs.readdirSync(subdir, { withFileTypes: true }).forEach(dirent => {
             const fullPath = path.join(subdir, dirent.name);
+            if (dirent.name === 'package-lock.json') return;
             if (isExcludedDir(fullPath) || isIgnored(fullPath)) return;
 
             if (dirent.isDirectory()) {

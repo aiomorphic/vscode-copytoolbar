@@ -36,6 +36,10 @@ function activate(context) {
         await CopyFeatures.copyJSProjectStructure();
     }));
 
+    context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_JS_PROJECT_CONTENT, async () => {
+        await CopyFeatures.copyJSProjectContent();
+    }));
+
     context.subscriptions.push(vscode.commands.registerCommand(constants.CMD_COPY_MD_DOCS_AND_DOCSTRINGS, async () => {
         await CopyFeatures.copyMDDocsAndDocstrings();
     }));

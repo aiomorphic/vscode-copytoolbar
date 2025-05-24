@@ -15,6 +15,7 @@ class CopyFeatures {
         for (const entry of entries) {
             const fullPath = path.join(folderPath, entry.name);
             
+            if (entry.name === 'package-lock.json') continue;
             if (entry.isDirectory()) {
                 if (!filterUtils.isExcludedDir(fullPath) && !filterUtils.isIgnoredByGitignore(fullPath, workspaceRoot)) {
                     await this.traverseFolderAndCopy(fullPath, workspaceRoot, copyStrings, filterUtils);
@@ -111,7 +112,7 @@ class CopyFeatures {
             return;
         }
     
-        const jsScript = path.join(__dirname, 'javascript', 'js_project_structure.js');
+        const jsScript = path.join(__dirname, 'js_project_structure.js');
         const tempFile = path.join(os.tmpdir(), 'js_project_structure_output.txt');
     
         exec(`node ${jsScript} ${workspaceRoot} > ${tempFile}`, async (err, stdout, stderr) => {
@@ -148,18 +149,26 @@ class CopyFeatures {
         await filterUtils.initialize();
         await filterUtils.loadGitignore(workspaceRoot);
     
+        // Collect documentation from multiple sources
         const mdContent = await this.collectMarkdownFiles(workspaceRoot, filterUtils);
-        const docstringsContent = await this.extractDocstrings(workspaceRoot, filterUtils);
+        const pythonDocstrings = await this.extractPythonDocstrings(workspaceRoot);
+        const jsDocstrings = await this.extractJSDocstrings(workspaceRoot);
+        const configContent = await this.collectConfigFiles(workspaceRoot, filterUtils);
     
-        const combinedContent = [mdContent, docstringsContent].filter(Boolean).join('\n\n');
+        const combinedContent = [
+            mdContent, 
+            pythonDocstrings, 
+            jsDocstrings, 
+            configContent
+        ].filter(Boolean).join('\n\n');
     
         if (combinedContent.trim() === '') {
-            vscode.window.showInformationMessage('No Markdown files or Python docstrings found in the project.');
+            vscode.window.showInformationMessage('No documentation, docstrings, or config files found in the project.');
             return;
         }
     
         await vscode.env.clipboard.writeText(combinedContent);
-        vscode.window.showInformationMessage('Markdown docs and Python docstrings content copied to clipboard.');
+        vscode.window.showInformationMessage('Documentation and config files copied to clipboard.');
     }
 
     static async collectMarkdownFiles(rootPath, filterUtils) {
@@ -191,36 +200,103 @@ class CopyFeatures {
         }
 
         await traverseDirectory(rootPath);
-        return results.join('');
+        return results.length > 0 ? '# Markdown Documentation\n\n' + results.join('') : '';
     }
 
-
-    static async extractDocstrings(workspaceRoot, filterUtils) {
-        const pythonScript = path.join(__dirname, 'python', 'copy_docstrings.py');
-        const tempFile = path.join(os.tmpdir(), 'docstrings_output.txt');
+    static async collectConfigFiles(rootPath, filterUtils) {
+        const results = [];
+        const configExtensions = ['.json', '.yaml', '.yml', '.toml', '.ini', '.cfg', '.conf'];
+        const importantConfigFiles = [
+            'package.json', 'tsconfig.json', 'jsconfig.json', 
+            '.eslintrc.json', '.prettierrc', 'babel.config.js',
+            'webpack.config.js', 'rollup.config.js', 'vite.config.js',
+            'requirements.txt', 'pyproject.toml', 'setup.py', 'setup.cfg',
+            'Dockerfile', 'docker-compose.yml', '.env.example'
+        ];
     
-        return new Promise((resolve, reject) => {
+        async function traverseDirectory(directory, depth = 0) {
+            if (depth > 2) return; // Limit depth for config files
+            
+            const entries = await fs.readdir(directory, { withFileTypes: true });
+    
+            for (const entry of entries) {
+                const fullPath = path.join(directory, entry.name);
+                
+                if (entry.name === 'package-lock.json') continue;
+                if (filterUtils.isExcludedDir(fullPath) || filterUtils.isIgnoredByGitignore(fullPath, rootPath)) {
+                    continue;
+                }
+    
+                if (entry.isDirectory() && depth < 2) {
+                    await traverseDirectory(fullPath, depth + 1);
+                } else if (entry.isFile()) {
+                    const ext = path.extname(entry.name);
+                    const isConfigFile = configExtensions.includes(ext) || 
+                                       importantConfigFiles.includes(entry.name);
+                    
+                    if (isConfigFile) {
+                        try {
+                            const fileContent = await fs.readFile(fullPath, 'utf-8');
+                            const separator = '-'.repeat(23);
+                            const relativePath = path.relative(rootPath, fullPath);
+                            results.push(`${separator}\n\n/${relativePath}:\n\n${separator}\n\n${fileContent}\n\n`);
+                        } catch (err) {
+                            console.error(`Error reading config file: ${err.message}`);
+                        }
+                    }
+                }
+            }
+        }
+
+        await traverseDirectory(rootPath);
+        return results.length > 0 ? '# Configuration Files\n\n' + results.join('') : '';
+    }
+
+    static async extractPythonDocstrings(workspaceRoot) {
+        const pythonScript = path.join(__dirname, 'python', 'copy_docstrings.py');
+        const tempFile = path.join(os.tmpdir(), 'python_docstrings_output.txt');
+    
+        return new Promise((resolve) => {
             exec(`python3 ${pythonScript} ${workspaceRoot} ${tempFile}`, async (err, stdout, stderr) => {    
                 if (err) {
-                    vscode.window.showErrorMessage(`Error running Python script: ${stderr}`);
-                    reject(err);
+                    console.error(`Error extracting Python docstrings: ${stderr}`);
+                    resolve('');
                     return;
                 }
     
                 try {
                     const docstringsOutput = await fs.readFile(tempFile, 'utf-8');
-                    if (docstringsOutput.trim() === '') {
-                        resolve('');
-                    } else {
-                        resolve(docstringsOutput);
-                    }
+                    resolve(docstringsOutput.trim() ? docstringsOutput : '');
                 } catch (readErr) {
-                    vscode.window.showErrorMessage(`Error reading docstrings output file: ${readErr.message}`);
-                    reject(readErr);
+                    console.error(`Error reading Python docstrings file: ${readErr.message}`);
+                    resolve('');
                 } finally {
-                    fs.unlink(tempFile, (unlinkErr) => {
-                        if (unlinkErr) console.error(`Error deleting temp file: ${unlinkErr.message}`);
-                    });
+                    fs.unlink(tempFile).catch(console.error);
+                }
+            });
+        });
+    }
+
+    static async extractJSDocstrings(workspaceRoot) {
+        const jsScript = path.join(__dirname, 'javascript', 'js_comment_extractor.js');
+        const tempFile = path.join(os.tmpdir(), 'js_docstrings_output.txt');
+    
+        return new Promise((resolve) => {
+            exec(`node ${jsScript} ${workspaceRoot} ${tempFile}`, async (err, stdout, stderr) => {    
+                if (err) {
+                    console.error(`Error extracting JS docstrings: ${stderr}`);
+                    resolve('');
+                    return;
+                }
+    
+                try {
+                    const docstringsOutput = await fs.readFile(tempFile, 'utf-8');
+                    resolve(docstringsOutput.trim() ? docstringsOutput : '');
+                } catch (readErr) {
+                    console.error(`Error reading JS docstrings file: ${readErr.message}`);
+                    resolve('');
+                } finally {
+                    fs.unlink(tempFile).catch(console.error);
                 }
             });
         });
@@ -292,90 +368,6 @@ class CopyFeatures {
             vscode.window.showInformationMessage(`Folder path(s) and content copied to clipboard. ${copyStrings.length} files copied.`);
         } else {
             vscode.window.showInformationMessage('No files found in the folder.');
-        }
-    }
-
-    static async copyJSProjectContent() {
-        const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        
-        if (!workspaceRoot) {
-            vscode.window.showInformationMessage('No workspace is opened.');
-            return;
-        }
-
-        const filterUtils = new FilterUtils();
-        await filterUtils.initialize();
-        await filterUtils.loadGitignore(workspaceRoot);
-
-        const copyStrings = [];
-        const jsExtensions = ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs', '.vue', '.svelte'];
-        const configFiles = ['package.json', 'tsconfig.json', 'jsconfig.json', '.eslintrc.json', 
-                            '.prettierrc', 'babel.config.js', 'webpack.config.js', 'vite.config.js',
-                            'rollup.config.js', '.env.example'];
-
-        // First, add important config files from root (exclude package-lock.json)
-        for (const configFile of configFiles) {
-            if (configFile === 'package-lock.json') continue;
-            const configPath = path.join(workspaceRoot, configFile);
-            try {
-                const exists = await fs.access(configPath).then(() => true).catch(() => false);
-                if (exists) {
-                    const fileContent = await fs.readFile(configPath, 'utf-8');
-                    const separator = '-'.repeat(50);
-                    const normalizedPath = configFile;
-                    const copyString = `${separator}\n\n/${normalizedPath}:\n\n${separator}\n\n${fileContent}`;
-                    copyStrings.push(copyString);
-                    copyStrings.push('\n\n');
-                }
-            } catch (error) {
-                // File doesn't exist, skip
-            }
-        }
-
-        // Then traverse and copy all JS/TS files
-        async function traverseForJS(directory) {
-            const entries = await fs.readdir(directory, { withFileTypes: true });
-
-            for (const entry of entries) {
-                const fullPath = path.join(directory, entry.name);
-                
-                if (entry.name === 'package-lock.json') continue;
-                if (entry.isDirectory()) {
-                    if (!filterUtils.isExcludedDir(fullPath) && !filterUtils.isIgnoredByGitignore(fullPath, workspaceRoot)) {
-                        await traverseForJS(fullPath);
-                    }
-                } else if (entry.isFile()) {
-                    const ext = path.extname(entry.name).toLowerCase();
-                    if (jsExtensions.includes(ext) && filterUtils.shouldIncludeFile(fullPath, workspaceRoot)) {
-                        const normalizedPath = path.relative(workspaceRoot, fullPath).split(path.sep).join('/');
-                        try {
-                            let fileContent = await fs.readFile(fullPath, 'utf-8');
-                            
-                            if (ConfigManager.getEnableWhitespaceRemoval()) {
-                                fileContent = WhitespaceRemover.removeUnnecessaryWhitespace(fileContent);
-                            }
-                            
-                            const separator = '-'.repeat(50);
-                            const copyString = `${separator}\n\n/${normalizedPath}:\n\n${separator}\n\n${fileContent}`;
-                            copyStrings.push(copyString);
-                            copyStrings.push('\n\n');
-                        } catch (error) {
-                            console.error(`Error reading file ${fullPath}: ${error.message}`);
-                        }
-                    }
-                }
-            }
-        }
-
-        await traverseForJS(workspaceRoot);
-
-        if (copyStrings.length > 0) {
-            const header = `# JavaScript/TypeScript Project Content\n# Project: ${path.basename(workspaceRoot)}\n# Files: ${copyStrings.length / 2}\n\n`;
-            const combinedContent = header + copyStrings.join('');
-            await vscode.env.clipboard.writeText(combinedContent);
-            vscode.window.showInformationMessage(`JS/TS project content copied to clipboard. ${copyStrings.length / 2} files included.`);
-        } else {
-            vscode.window.showInformationMessage('No JavaScript/TypeScript files found in the project.');
         }
     }
 

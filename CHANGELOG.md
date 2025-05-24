@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.2.0
+
+- New "Copy JS Project Content" command to copy all JavaScript/TypeScript files from your project
+- JavaScript/TypeScript JSDoc comment extraction in "Copy MD Docs and Docstrings"
+- Renamed buttons for clarity: "Copy JS Project" → "Copy JS Structure"
+- Support for Vue and Svelte files: `.vue`, `.svelte`
+- Support for additional config formats: `.toml`, `.conf`, `.properties`
+- Support for additional documentation formats: `.mdx`, `.rst`
+- Improved keybindings with proper macOS support
+
+
 ## 1.1.0
 
 - **Whitespace Optimization:** Added automatic whitespace removal feature to reduce token consumption.

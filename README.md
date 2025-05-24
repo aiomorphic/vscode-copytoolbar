@@ -16,14 +16,16 @@ When you're working on large production projects with complex codebases, providi
 
 - **Instant Copy Commands**:
     - ![File Path & Content](resources/inverted_codicon--copy.png) **File Path & Content**: Copy the file path and content of the active file in one click.
-    - ![Folder Content](resources/inverted_codicon--file-submodule.png) **Folder Content**: Copy all code files within a folder, respecting .gitignore rules, to provide comprehensive context to AI models. Copy entire module contents to provide AI models with the necessary context without sharing the entire codebase.
-    - ![Project Structure & Docs](resources/inverted_codicon--symbol-structure.png) **Project Structure & Docs**: Generate and copy your project's structure using AST analysis, ensuring AI understands the full scope of your project.
+    - ![Folder Content](resources/inverted_codicon--file-submodule.png) **Folder Content**: Copy all code files within a folder, respecting .gitignore rules, to provide comprehensive context to AI models.
+    - ![Python Project Structure](resources/inverted_codicon--symbol-structure.png) **Python Project Structure**: Generate and copy your Python project's structure using AST analysis, ensuring AI understands the full scope of your project.
     - ![JS Project Structure](resources/inverted_codicon--json.png) **JS Project Structure**: Analyze and copy the structure of JavaScript/TypeScript projects.
-    - ![MD Docs & Docstrings](resources/inverted_codicon--markdown.png) **MD Docs & Docstrings**: Copy Markdown documentation and Python docstrings.
+    - ![JS Project Content](resources/inverted_codicon--gist.png) **JS Project Content**: Copy all JavaScript/TypeScript files and configuration files from your project, similar to Python folder copy.
+    - ![MD Docs & Docstrings](resources/inverted_codicon--markdown.png) **MD Docs & Docstrings**: Copy Markdown documentation, Python docstrings, and JavaScript JSDoc comments.
     
 - **Remote Explorer Compatibility**: Fully compatible with SSH-connected remote environments, making it effortless to copy and paste code, even when working on remote servers or virtual machines.
 - **File Explorer Context Menu**: Select several files in File Explorer and use the `Copy File Path and Content` command to quickly share relevant code with AI tools.
 - **Whitespace Optimization**: Automatically remove unnecessary whitespace to reduce token consumption
+- **Smart Filtering**: Automatically excludes common build directories, dependencies, and respects .gitignore patterns
 
 ### Toolbar screenshot
 
@@ -39,24 +41,37 @@ You can access these commands through the command palette (`Ctrl+Shift+P`) or by
 
 - `Copy File Path and Content`: Copies the file path and content of the current file.
 - `Copy Folder Content`: Copies the content of the folder containing the current file.
-- `Copy Project Structure and Docs`: Analyzes the Python project's structure and documentation and copies it.
+- `Copy Python Project Structure`: Analyzes the Python project's structure and documentation and copies it.
 - `Copy JS Project Structure`: Analyzes the JavaScript/TypeScript project's structure and copies it.
-- `Copy MD Docs and Docstrings`: Copies Markdown documentation and Python docstrings.
+- `Copy JS Project Content`: Copies all JavaScript/TypeScript source files and configuration files from your project.
+- `Copy MD Docs and Docstrings`: Copies Markdown documentation, Python docstrings, and JavaScript JSDoc comments.
 
 ### Keybindings
 
 The following keybindings are available by default:
 
-- `Ctrl+Alt+C`: Copy File Path and Content
-- `Ctrl+Alt+F`: Copy Folder Content
-- `Ctrl+Alt+S`: Copy Project Structure and Docs
-- `Ctrl+Alt+J`: Copy JS Project Structure
-- `Ctrl+Alt+D`: Copy MD Docs and Docstrings
+- `Ctrl+Alt+C` (`Cmd+Alt+C` on Mac): Copy File Path and Content
+- `Ctrl+Alt+F` (`Cmd+Alt+F` on Mac): Copy Folder Content
+- `Ctrl+Alt+S` (`Cmd+Alt+S` on Mac): Copy Python Project Structure
+- `Ctrl+Alt+J` (`Cmd+Alt+J` on Mac): Copy JS Project Structure
+- `Ctrl+Alt+Shift+J` (`Cmd+Alt+Shift+J` on Mac): Copy JS Project Content
+- `Ctrl+Alt+D` (`Cmd+Alt+D` on Mac): Copy MD Docs and Docstrings
 
 ### Settings
 
 - `FastPaste.enableWhitespaceRemoval`: Enable/disable automatic whitespace optimization (default: false).
 - `FastPaste.showNotifications`: Show/hide notifications when copying content (default: true).
+- `FastPaste.fileExtensions`: Additional file extensions to include when copying (default: includes most common programming languages).
+- `FastPaste.excludedDirectories`: Additional directories to exclude when copying (default: includes common build/dependency directories).
+
+### Supported File Types
+
+FastPaste supports a wide range of file types including:
+- **Languages**: Python, JavaScript, TypeScript, Java, C/C++, C#, Ruby, Go, Rust, Swift, Kotlin, PHP, and more
+- **Web**: HTML, CSS, SCSS, JSX, TSX, Vue, Svelte
+- **Config**: JSON, YAML, TOML, INI, XML, .env files
+- **Documentation**: Markdown, reStructuredText, plain text
+- **Build**: package.json, tsconfig.json, webpack.config.js, Dockerfile, and more
 
 ## Installation
 
